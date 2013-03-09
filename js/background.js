@@ -86,13 +86,13 @@ initialize: function(){
 			}
 		}.bind(this));
 	
-	port.onDisconnect.addListener(function(port){
-		if(port.name === 'fm'){
+		port.onDisconnect.addListener(function(port){
+			if(port.name === 'fm'){
 			this.p = null;
-		}
+			}
+		}.bind(this));
+	}
 	}.bind(this));
-}
-}.bind(this));
 },
 events:{
 	'loadstart':'onloadstart',
@@ -102,10 +102,9 @@ events:{
 },
 
 onloadstart: function(){
-this.canplaythrough =false;
-this.time = 0;
-this.p && this.p.postMessage({cmd: 'canplaythrough',status:false});
-
+	this.canplaythrough =false;
+	this.time = 0;
+	this.p && this.p.postMessage({cmd: 'canplaythrough',status:false});
 },
 
 
@@ -163,7 +162,7 @@ fetchSongs: function (fn) {
                 });
             },
             fetch();
-}
+	}
 });
 
 var p = new mfm.Player();
