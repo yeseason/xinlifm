@@ -40,6 +40,9 @@ initialize: function(){
 	this.playList = new mfm.PlayList();
 	chrome.browserAction.setPopup({popup:'../popup.html'});
 	var self =this;
+    var songs=this.fetchSongs(function(){
+		this.el.src = this.playList.at(0).get('url');
+    }.bind(this));
 	chrome.extension.onConnect.addListener(function(port){
 	if(port.name === 'fm'){
 	this.p = port;
@@ -72,17 +75,12 @@ initialize: function(){
 			this.isRepeat = msg.status;
 		break;
 		case 'get':
-              if (this.playList.length) {
-                    port.postMessage(this.getCurrentSongInfo());
-              }
-              else {
-              	this.fetchSongs(function(){
-		               this.el.src = this.playList.at(0).get('url');
+			console.log(this.playList.length);
+              if (this.playList.length) {        
                        if (this.isPlay) {
                                 this.el.play();
                        }
-                       port.postMessage(this.getCurrentSongInfo());
-              	}.bind(this));
+                    port.postMessage(this.getCurrentSongInfo());
               }
         break;	
 		}
