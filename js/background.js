@@ -45,46 +45,46 @@ initialize: function(){
     }.bind(this));
 	chrome.extension.onConnect.addListener(function(port){
 	if(port.name === 'fm'){
-	this.p = port;
-	port.onMessage.addListener(function(msg,port){
-	switch ( msg.cmd ){
-		case 'switch':
-			this.isPlay = msg.isPlay;
-			if(msg.isPlay){
-				this.el.play();
-			}else{
-				this.el.pause();
-			}
-		break;
-		case 'next':
-			this.current +=1;
-			this.el.src = this.playList.at(this.current).get('url');
-			if(this.isPlay){ this.el.play();}
-			this.time=0;
-			port.postMessage(self.getCurrentSongInfo());
-		break;
-		case 'prev':
-			if(this.current){
-				this.current -=1;
-				this.el.src =this.playList.at(this.current).get('url');
+		this.p = port;
+		port.onMessage.addListener(function(msg,port){
+		switch ( msg.cmd ){
+			case 'switch':
+				this.isPlay = msg.isPlay;
+				if(msg.isPlay){
+					this.el.play();
+				}else{
+					this.el.pause();
+				}
+			break;
+			case 'next':
+				this.current +=1;
+				this.el.src = this.playList.at(this.current).get('url');
 				if(this.isPlay){ this.el.play();}
-			}
-			port.postMessage(self.getCurrentSongInfo());
-		break;
-		case 'repeat':
-			this.isRepeat = msg.status;
-		break;
-		case 'get':
-			console.log(this.playList.length);
-              if (this.playList.length) {        
+				this.time=0;
+				port.postMessage(self.getCurrentSongInfo());
+			break;
+			case 'prev':
+				if(this.current){
+					this.current -=1;
+					this.el.src =this.playList.at(this.current).get('url');
+					if(this.isPlay){ this.el.play();}
+				}
+				port.postMessage(self.getCurrentSongInfo());
+			break;
+			case 'repeat':
+				this.isRepeat = msg.status;
+			break;
+			case 'get':
+				console.log(this.playList.length);
+              	if (this.playList.length) {        
                        if (this.isPlay) {
                                 this.el.play();
                        }
                     port.postMessage(this.getCurrentSongInfo());
               }
-        break;	
-		}
-	}.bind(this));
+        	break;	
+			}
+		}.bind(this));
 	
 	port.onDisconnect.addListener(function(port){
 		if(port.name === 'fm'){
